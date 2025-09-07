@@ -55,11 +55,11 @@ export default function QuizTable() {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>Name</TableHead>
             <TableHead>Title</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Questions</TableHead>
-            <TableHead>Duration</TableHead>
-            <TableHead>Passing Score</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Offer Price</TableHead>
+            <TableHead>Gift</TableHead>
 
             <TableHead>Actions</TableHead>
           </TableRow>
@@ -67,18 +67,24 @@ export default function QuizTable() {
         <TableBody>
           {quizzes.map((quiz) => (
             <TableRow key={quiz._id}>
-              <TableCell>{quiz.title}</TableCell>
-              <TableCell>{quiz.description}</TableCell>
               <TableCell>{quiz.name}</TableCell>
+              <TableCell>{quiz.title}</TableCell>
+
               <TableCell>{quiz.price}</TableCell>
-              <TableCell>{quiz.problem}</TableCell>
+              <TableCell>{quiz.offerPrice}</TableCell>
+              <TableCell>{quiz.gift}</TableCell>
 
               <TableCell>
                 <Button
                   variant="destructive"
                   onClick={() => handleDelete(quiz._id)}
+                  className="mb-2"
                 >
                   Delete
+                </Button>
+                <Button variant="destructive">
+                  {" "}
+                  <Link href={`/admin/products/${quiz._id}`}>Edit</Link>
                 </Button>
               </TableCell>
             </TableRow>

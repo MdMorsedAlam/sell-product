@@ -1,0 +1,51 @@
+#app {
+  height: 100%;
+}
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+body {
+  background: #000;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #444;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.animated-path {
+  stroke-dasharray: 1000; /* Total length of the path */
+  stroke-dashoffset: 1000; /* Start with the path hidden */
+  animation: draw 4s ease-in-out forwards; /* Animation to draw the path */
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0; /* Draw the path */
+  }
+}

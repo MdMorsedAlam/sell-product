@@ -1,36 +1,39 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import { usePost, usePostWithFiles } from "@/hooks/useApi";
-import { IProduct } from "@/types"; // Assuming IProduct is defined correctly
+import { usePostWithFiles } from "@/hooks/useApi";
 import { Button } from "@/components/ui/button";
 import { Upload, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function CreateProductPage() {
+  const [file, setFile] = useState<File | null>(null);
+   const router=useRouter();
   const [productData, setProductData] = useState({
     name: "",
-    title: "a",
-    subTitle: "a",
-    description: "a",
-    buttonText: "a",
+    title: "",
+    subTitle: "",
+    description: "",
+    buttonText: "",
     imageUrl: "", // preview url (string)
-    gift: "a",
-    price: 20,
-    offerPrice: 10,
-    problem: "a",
-    problemSolving: "a",
+    gift: "",
+    price: 0,
+    offerPrice: 0,
+    problem: "",
+    problemSolving: "",
     solutions: [] as string[],
-    eatProduct: "a",
-    useProduct: "a",
+    eatProduct: "",
+    useProduct: "",
     imageFiles: [] as File[], // review image files
     imagePreviews: [] as string[], // review image previews
     contactNumber: [] as string[],
-    // ✅ added: real file for main product image
-    mainImageFile: null as File | null,
+    mainImageFile: null as File | null, // for the actual product image file
   });
 
-  const { mutate: createProduct } = usePost("/products/create", ["products"]);
+  const { mutate: createProduct } = usePostWithFiles("/products/create", [
+    "products",
+  ]);
   const [isLoading, setIsLoading] = useState(false);
 
   // Handle input change for product fields
@@ -44,11 +47,13 @@ export default function CreateProductPage() {
     setProductData({ ...productData, [field]: value });
   };
 
-  const updateField = <K extends keyof typeof productData>(
-    key: K,
-    value: (typeof productData)[K]
+  const handleSolutionChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
   ) => {
-    setProductData((prev) => ({ ...prev, [key]: value }));
+    const updatedSolutions = [...productData.solutions];
+    updatedSolutions[index] = e.target.value;
+    setProductData({ ...productData, solutions: updatedSolutions });
   };
 
   // Handle adding/removing solutions
@@ -65,14 +70,49 @@ export default function CreateProductPage() {
     );
     setProductData({ ...productData, solutions: updatedSolutions });
   };
-
-  const handleSolutionChange = (
+  // Handle adding/removing contact numbers
+  const handleContactNumberChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    const updatedSolutions = [...productData.solutions];
-    updatedSolutions[index] = e.target.value;
-    setProductData({ ...productData, solutions: updatedSolutions });
+    const updatedContactNumbers = [...productData.contactNumber];
+    updatedContactNumbers[index] = e.target.value;
+    setProductData({ ...productData, contactNumber: updatedContactNumbers });
+  };
+
+  // Handle adding a new contact number input
+  const addContactNumber = () => {
+    setProductData({
+      ...productData,
+      contactNumber: [...productData.contactNumber, ""],
+    });
+  };
+
+  // Handle removing a contact number
+  const removeContactNumber = (index: number) => {
+    const updatedContactNumbers = productData.contactNumber.filter(
+      (_, i) => i !== index
+    );
+    setProductData({ ...productData, contactNumber: updatedContactNumbers });
+  };
+  // Handle main image change: keep both preview url and real file
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+    if (selectedFile) {
+      setFile(selectedFile);
+      productData.imageUrl = URL.createObjectURL(selectedFile);
+    }
+  };
+
+  // Handle review images change
+  const handleReviewImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setProductData((prev) => ({
+      ...prev,
+      imageFiles: files, // real Files for reviews
+      imagePreviews: previews, // preview urls for UI display
+    }));
   };
 
   // Handle product form submission
@@ -96,68 +136,58 @@ export default function CreateProductPage() {
     form.append("problemSolving", productData.problemSolving);
     form.append("eatProduct", productData.eatProduct);
     form.append("useProduct", productData.useProduct);
-
+    // Append review images
+    productData.imageFiles.forEach((file) => form.append("reviews", file));
     // solutions[]
     productData.solutions.forEach((solution, i) => {
       form.append(`solutions[${i}]`, solution);
     });
-    form.append("imageUrl", productData.imageUrl as unknown as Blob);
-
-    productData.imageFiles.forEach((file) => {
-      form.append("reviews", file);
+    // Append contact numbers
+    productData.contactNumber.forEach((number, i) => {
+      form.append(`contactNumber[${i}]`, number);
     });
-    // ✅ main product image as real File
-    // if (productData.mainImageFile) {
-    //   form.append("imageUrl", productData.mainImageFile);
-    // }
-
-    // // reviews[] as files (only once)
-    // productData.imageFiles.forEach((file) => {
-    //   form.append("reviews", file);
-    // });
+    // Append main product image (ensure it's a file)
+    if (file) {
+      form.append("imageUrl", file!); // append the actual file, not the URL string
+    }
 
     try {
       setIsLoading(true);
       console.log([...form]);
       await createProduct(form);
       toast.success("Product created successfully!");
+      router.push("/admin/products");
+      // Reset form
+      setProductData({
+        name: "",
+        title: "",
+        subTitle: "",
+        description: "",
+        buttonText: "",
+        imageUrl: "",
+        gift: "",
+        price: 0,
+        offerPrice: 0,
+        problem: "",
+        problemSolving: "",
+        solutions: [],
+        eatProduct: "",
+        useProduct: "",
+        imageFiles: [],
+        imagePreviews: [],
+        contactNumber: [],
+        mainImageFile: null,
+      });
+      setFile(null);
+      // Reset file input value
+      const fileInput = document.getElementById("imageUrl") as HTMLInputElement;
+      if (fileInput) fileInput.value = "";
     } catch (error) {
       toast.error("Failed to create product. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
-
-  // Handle main image change: keep both preview url and real file
-  const handleImageChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    field: string
-  ) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      setProductData({ ...productData, [field]: file }); // Store the file object for imageUrl }
-    }
-  };
-
-  // Handle review images change
-  const handleReviewImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    const previews = files.map((file) => URL.createObjectURL(file));
-    setProductData((prev) => ({
-      ...prev,
-      imageFiles: files, // real Files for reviews
-      imagePreviews: previews, // preview urls for UI
-    }));
-  };
-
-  // (kept as requested) — make it a safe wrapper instead of throwing
-  function handleSolutionChangeWrapper(
-    e: ChangeEvent<HTMLInputElement>,
-    index: number
-  ): void {
-    handleSolutionChange(e, index);
-  }
 
   return (
     <div className="space-y-6 w-full p-4">
@@ -175,7 +205,7 @@ export default function CreateProductPage() {
             <option value="">Select Product Name</option>
             <option value="Haluwa">Haluwa</option>
             <option value="Shefa Mixed">Shefa Mixed</option>
-            <option value="Tin Neyamot">Tin Neyamot</option>
+            <option value="Halwa Mohabbot">Halwa Mohabbot</option>
           </select>
         </div>
 
@@ -193,7 +223,7 @@ export default function CreateProductPage() {
         </div>
 
         {/* Product SubTitle */}
-        <div>
+        <div hidden={productData.name==="Halwa Mohabbot"}>
           <label className="block">Product SubTitle</label>
           <input
             type="text"
@@ -205,14 +235,13 @@ export default function CreateProductPage() {
         </div>
 
         {/* Product Description */}
-        <div>
+        <div hidden={productData.name==="Halwa Mohabbot"}>
           <label className="block">Product Description</label>
           <textarea
             value={productData.description}
             onChange={(e) => handleInputChange(e, "description")}
             className="w-full p-2 border rounded"
             placeholder="Enter product description"
-            required
           />
         </div>
 
@@ -234,11 +263,10 @@ export default function CreateProductPage() {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => handleImageChange(e, "imageUrl")}
+            onChange={handleImageChange}
             className="w-full p-2 border rounded"
             id="imageUrl"
           />
-
           {productData.imageUrl && (
             <img
               src={productData.imageUrl} // preview string
@@ -249,8 +277,8 @@ export default function CreateProductPage() {
         </div>
 
         {/* Product Gift */}
-        <div>
-          <label className="block">Gift</label>
+        <div hidden={productData.name==="Halwa Mohabbot"}>
+          <label className="block">উপহার ফ্রী</label>
           <input
             type="text"
             value={productData.gift}
@@ -262,9 +290,9 @@ export default function CreateProductPage() {
 
         {/* Product Price */}
         <div>
-          <label className="block">Price</label>
+          <label className="block">রেগুলার প্রাইজ</label>
           <input
-            type="number"
+            type="text"
             value={productData.price}
             onChange={(e) => handleInputChange(e, "price")}
             className="w-full p-2 border rounded"
@@ -275,9 +303,9 @@ export default function CreateProductPage() {
 
         {/* Product Offer Price */}
         <div>
-          <label className="block">Offer Price</label>
+          <label className="block">অফার প্রাইজ</label>
           <input
-            type="number"
+            type="text"
             value={productData.offerPrice}
             onChange={(e) => handleInputChange(e, "offerPrice")}
             className="w-full p-2 border rounded"
@@ -286,8 +314,8 @@ export default function CreateProductPage() {
         </div>
 
         {/* Product Problem */}
-        <div>
-          <label className="block">Problem</label>
+        <div hidden={productData.name==="Halwa Mohabbot"}>
+          <label className="block">সমস্যা</label>
           <input
             type="text"
             value={productData.problem}
@@ -299,7 +327,7 @@ export default function CreateProductPage() {
 
         {/* Product Problem Solving */}
         <div>
-          <label className="block">Problem Solving</label>
+          <label className="block">সমাধান টাইটেল</label>
           <input
             type="text"
             value={productData.problemSolving}
@@ -311,7 +339,7 @@ export default function CreateProductPage() {
 
         {/* Solutions */}
         <div>
-          <label className="block">Solutions</label>
+          <label className="block">সমাধান আইটেমস</label>
           {productData.solutions.map((solution, index) => (
             <div key={index} className="flex gap-2">
               <input
@@ -326,22 +354,22 @@ export default function CreateProductPage() {
                 onClick={() => removeSolution(index)}
                 className="bg-red-500 text-white px-2 py-1 rounded"
               >
-                Remove
+                সমাধান রিমুভ করুন
               </button>
             </div>
           ))}
           <button
             type="button"
             onClick={addSolution}
-            className="bg-gray-500 text-white px-4 py-2 rounded"
+            className="bg-blue-500 text-white px-4 py-2 rounded"
           >
-            Add Solution
+            সমাধান এড করুন
           </button>
         </div>
 
         {/* Product Usage */}
         <div>
-          <label className="block">Eat Product</label>
+          <label className="block">খাবার নিয়ম</label>
           <input
             type="text"
             value={productData.eatProduct}
@@ -351,8 +379,8 @@ export default function CreateProductPage() {
           />
         </div>
 
-        <div>
-          <label className="block">Use Product</label>
+        <div hidden={productData.name === "Shefa Mixed"}>
+          <label className="block">ব্যাবহারের নিয়ম</label>
           <input
             type="text"
             value={productData.useProduct}
@@ -361,9 +389,38 @@ export default function CreateProductPage() {
             placeholder="Enter use product details"
           />
         </div>
-
+        {/* Contact Numbers */}
+        <div>
+          <label className="block">Contact Numbers</label>
+          {productData.contactNumber.map((contact, index) => (
+            <div key={index} className="flex gap-2 mb-2">
+              <input
+                type="text"
+                value={contact}
+                onChange={(e) => handleContactNumberChange(e, index)}
+                className="w-full p-2 border rounded"
+                placeholder={`Contact Number ${index + 1}`}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => removeContactNumber(index)}
+                className="bg-red-500 text-white px-2 py-1 rounded"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={addContactNumber}
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Add Contact Number
+          </button>
+        </div>
         {/* Product Reviews (Multiple Image Upload) */}
-        <div className="p-4 space-y-4">
+        <div className=" space-y-4">
           <label>Review Images</label>
           <div className="grid grid-cols-2 gap-2">
             {productData.imagePreviews.map((src, idx) => (
@@ -385,8 +442,11 @@ export default function CreateProductPage() {
                     const newPreviews = [...productData.imagePreviews];
                     newFiles.splice(idx, 1);
                     newPreviews.splice(idx, 1);
-                    updateField("imageFiles", newFiles);
-                    updateField("imagePreviews", newPreviews);
+                    setProductData({
+                      ...productData,
+                      imageFiles: newFiles,
+                      imagePreviews: newPreviews,
+                    });
                   }}
                 >
                   <X className="h-4 w-4" />

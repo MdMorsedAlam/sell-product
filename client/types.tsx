@@ -7,8 +7,8 @@ export interface IProduct {
   buttonText: string;
   imageUrl: string;
   gift: string;
-  price: number;
-  offerPrice: number;
+  price: string;
+  offerPrice: string;
   problem: string;
   problemSolving: string;
   solutions: string[];
@@ -16,5 +16,17 @@ export interface IProduct {
   useProduct: string;
   reviews: string[];
   contactNumber: string[];
-  
+}
+
+export interface IOrder {
+  _id?: string;
+  name: string;
+  address: string;
+  phone: string;
+  status: string;
+  product: string; // reference to Product
+  totalPrice: string;
+  orderDate: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

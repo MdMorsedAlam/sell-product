@@ -95,7 +95,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
           <SidebarHeader className="border-b p-4 text-black bg-white">
             <div className="flex items-center gap-2">
               <div className="font-bold text-xl text-red-600">
-                <Link href="/">The Fog News</Link>
+                <Link href="/">Herbal Life</Link>
               </div>
             </div>
             <div className="text-sm text-muted-foreground">Admin Panel</div>

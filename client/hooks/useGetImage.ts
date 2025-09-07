@@ -8,5 +8,5 @@ export const getImageUrl = (filename?: string): string => {
   if (filename.startsWith("http")) return filename;
 
   // For relative paths, prefix with backend server URL
-  return `http://localhost:5000${filename}`;
+  return `${process.env.NEXT_PUBLIC_BASE_URL}${filename}`;
 };

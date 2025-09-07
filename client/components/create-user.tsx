@@ -83,31 +83,32 @@ function UserCreate({ userId }: UserEditorProps) {
         await patchUser.mutateAsync({ id: userId, data: formData });
         resetFormData();
         router.push("/admin/users");
+        toast.success("User updated successfully.");
       } else {
         await createUser(formData);
-        if (isSuccess) {
-         resetFormData();
-          router.push("/admin/users");
-        }
+
+        resetFormData();
+        router.push("/admin/users");
+        toast.success("User created successfully.");
       }
     } catch (error) {
       toast.error("Failed to create user. Please try again.");
     }
   };
-const resetFormData=()=>{
-      setFormData((prev) => ({
-            ...prev,
-            firstName: "",
-            lastName:"",
-            username:"",
-            email:  "",
-            password:"",
-            role: "admin",
-            language :"en",
-            phone: "",
-            needsPasswordChange: true,
-          }));
-}
+  const resetFormData = () => {
+    setFormData((prev) => ({
+      ...prev,
+      firstName: "",
+      lastName: "",
+      username: "",
+      email: "",
+      password: "",
+      role: "admin",
+      language: "en",
+      phone: "",
+      needsPasswordChange: true,
+    }));
+  };
   useEffect(() => {
     if (userId) {
       const getSingleUser = async () => {
@@ -246,8 +247,6 @@ const resetFormData=()=>{
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="editor">Editor</SelectItem>
-                  <SelectItem value="reporter">Reporter</SelectItem>
                 </SelectContent>
               </Select>
             </div>

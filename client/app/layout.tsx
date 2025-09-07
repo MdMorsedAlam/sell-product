@@ -40,9 +40,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.className}bg-white`}>
         <ClientOnly>
-          <ThemeProvider attribute="class">
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light" // 👈 this makes light the default
+            enableSystem={true}
+          >
             <QueryProvider>
               <AuthProvider>
                 <LanguageProvider>

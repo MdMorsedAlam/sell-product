@@ -183,6 +183,42 @@ export function usePatchWithFiles<TPayload = any, TResponse = any>(
     },
   });
 }
+export function usePatchForProductWithFiles<TPayload = any, TResponse = any>(
+  getEndpoint: (id: any) => any,
+  keyToInvalidate?: QueryKey
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation<TResponse, unknown, { id: any; data: TPayload }>({
+    mutationFn: async ({ id, data }) => {
+      try {
+        const endpoint = getEndpoint(id);
+        const isFormData =
+          typeof FormData !== "undefined" && data instanceof FormData;
+
+        const res = await axiosSecure.patch(endpoint, data, {
+          headers: isFormData
+            ? { "Content-Type": "multipart/form-data" }
+            : { "Content-Type": "application/json" },
+        });
+
+        return res.data;
+      } catch (error: any) {
+        toast.error("Error updating data with files.");
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      if (keyToInvalidate) {
+        queryClient.invalidateQueries({ queryKey: keyToInvalidate });
+      }
+      toast.success("Data updated with files successfully!");
+    },
+    onError: () => {
+      toast.error("Error updating data with files.");
+    },
+  });
+}
 
 export function usePatchForPoll<TPayload = any, TResponse = any>(
   getEndpoint: (pollId: string, optionId: string) => string, // Accept two IDs
@@ -219,7 +255,28 @@ export function usePatchForPoll<TPayload = any, TResponse = any>(
     },
   });
 }
+// usePatchStatus to update the order status via PATCH request
+export function usePatchStatus() {
+  const queryClient = useQueryClient();
 
+  return useMutation<any, unknown, { endpoint: string; data: any }>({
+    mutationFn: async ({ endpoint, data }) => {
+      try {
+        const res = await axiosSecure.patch(endpoint, data);  // Dynamic endpoint
+        return res.data;
+      } catch (error: any) {
+        toast.error("Error updating order status.");
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      toast.success("Order status updated successfully!");
+    },
+    onError: () => {
+      toast.error("Error updating order status.");
+    },
+  });
+}
 // useDelete hook to send DELETE request
 export function useDelete<TResponse = any>(
   endpoint: (id: string | number) => string,
