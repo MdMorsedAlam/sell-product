@@ -15,7 +15,7 @@ const router = express.Router();
 router.post(
   "/create",
   auth(ENUM_USER_ROLE.ADMIN),
-
+  uploadProductImages,
   // Middleware to handle product image upload
   // Ensure that only admins can create products // Handle multiple review images upload
   ProductsController.createProductController // Controller method to process the data
@@ -31,8 +31,7 @@ router.get("/:id", ProductsController.getSingleProduct);
 router.patch(
   "/:id",
   auth(ENUM_USER_ROLE.ADMIN),
-  uploadImages,
-  // validateRequest(NewsValidation.updateNewsZodSchema),
+  uploadProductImages, // Ensure this middleware handles multiple files correctly
   ProductsController.updateProduct
 );
 

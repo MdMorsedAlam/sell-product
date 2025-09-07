@@ -6,12 +6,12 @@ const ProductsSchema = new Schema<IProducts, IProductsModel>(
     name: { type: String, required: true },
     title: { type: String, required: true },
     subTitle: { type: String, default: "" },
-    description: { type: String, required: true },
+    description: { type: String,},
     buttonText: { type: String, default: "" },
     imageUrl: { type: String, default: "" },
     gift: { type: String, default: "" },
-    price: { type: Number, required: true },
-    offerPrice: { type: Number, default: 0 },
+    price: { type: String,default: "" },
+    offerPrice: { type: String, default: "" },
     problem: { type: String, default: "" },
     problemSolving: { type: String, default: "" },
     solutions: { type: [String], default: [] },
@@ -29,7 +29,7 @@ const ProductsSchema = new Schema<IProducts, IProductsModel>(
 );
 
 // Index for title and category (you can add more fields if needed)
-ProductsSchema.index({ title: 1, gift: 1 }, { unique: true });
+// ProductsSchema.index({ name: 1 }, { unique: true });
 
 export const Product = model<IProducts, IProductsModel>(
   "Product",

@@ -1,4 +1,3 @@
-
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
@@ -7,11 +6,17 @@ import { newsSearchableFields } from "./products.contants";
 import { Product } from "./products.model";
 import { IProducts } from "./products.interface";
 
-
 // Service to create a product
 export const createProduct = async (data: IProducts): Promise<IProducts> => {
   try {
-    // Save the product data into the database
+    // Check if a product with the same name already exists
+    const existingProduct = await Product.findOne({ name: data.name });
+
+    if (existingProduct) {
+      throw new Error("Product with the same name already exists.");
+    }
+
+    // Create and save the new product
     const product = new Product(data);
     await product.save();
     return product;
@@ -24,12 +29,10 @@ export const createProduct = async (data: IProducts): Promise<IProducts> => {
   }
 };
 
-
 const getSingleProduct = async (id: string): Promise<IProducts | null> => {
-  const result = await Product.findById(id).populate("category");
+  const result = await Product.findById(id);
   return result;
 };
-
 
 const getAllProduct = async (
   filters: Record<string, any>, // Use appropriate filters, e.g., status, type, etc.
@@ -54,22 +57,6 @@ const getAllProduct = async (
   }
 
   // Filters implementation
-  if (Object.keys(filtersData).length) {
-    const filterConditions = Object.entries(filtersData).map(
-      ([field, value]) => {
-        if (field === "category") {
-          return {
-            [field]:
-              typeof value === "string" && Types.ObjectId.isValid(value)
-                ? new Types.ObjectId(value)
-                : value,
-          };
-        }
-        return { [field]: value };
-      }
-    );
-    andConditions.push({ $and: filterConditions });
-  }
 
   const sortConditions: { [key: string]: SortOrder } = {};
   if (sortBy && sortOrder) {
@@ -80,7 +67,6 @@ const getAllProduct = async (
     andConditions.length > 0 ? { $and: andConditions } : {};
 
   const result = await Product.find(whereConditions)
-    .populate("category")
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
@@ -101,6 +87,7 @@ const updateProduct = async (
   id: string,
   payload: Partial<IProducts>
 ): Promise<IProducts | null> => {
+  // Only update fields that exist in the payload
   const result = await Product.findByIdAndUpdate(id, payload, { new: true });
   return result;
 };

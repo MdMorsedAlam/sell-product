@@ -9,8 +9,8 @@ export interface IProducts {
   buttonText: string;
   imageUrl?: string;
   gift?: string;
-  price: number;
-  offerPrice: number;
+  price: string;
+  offerPrice: string;
   problem?: string;
   problemSolving?: string;
   solutions?: string[];
@@ -23,6 +23,7 @@ export interface IProducts {
 }
 
 // Product model type (for Mongoose) with custom methods
-export interface IProductsModel extends Model<IProducts> {
-  findByCategory(category: string): Promise<IProducts[]>;
-}
+// export interface IProductsModel extends Model<IProducts> {
+//   findByCategory(category: string): Promise<IProducts[]>;
+// }
+export type IProductsModel = Model<IProducts, Record<string, unknown>>;

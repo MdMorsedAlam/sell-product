@@ -57,12 +57,10 @@ export const uploadReviews = multer({
 }).array("reviews", 5); // 'reviews' should match the field name in the frontend input
 
 export const uploadProductImages = multer({
- 
   storage: storage,
   fileFilter: (req, file, cb) => {
-     console.log("FormData being sent:",req.body, file.fieldname, file.filename);
     if (file.fieldname === "imageUrl") {
-      // Allow images and PDF for main file
+      // Allow images for the main product image (imageUrl)
       if (
         file.mimetype === "image/png" ||
         file.mimetype === "image/jpg" ||
@@ -70,10 +68,10 @@ export const uploadProductImages = multer({
       ) {
         cb(null, true);
       } else {
-        cb(new Error("Main file must be image (PNG/JPG/JPEG) or PDF"));
+        cb(new Error("Main file must be image (PNG/JPG/JPEG)"));
       }
     } else if (file.fieldname === "reviews") {
-      // Only allow images for thumbnail
+      // Allow multiple review images
       if (
         file.mimetype === "image/png" ||
         file.mimetype === "image/jpg" ||
@@ -81,20 +79,21 @@ export const uploadProductImages = multer({
       ) {
         cb(null, true);
       } else {
-        cb(new Error("Thumbnail must be an image (PNG/JPG/JPEG)"));
+        cb(new Error("Review images must be in PNG/JPG/JPEG format"));
       }
     } else {
       cb(new Error("Unexpected field"));
     }
   },
   limits: {
-    fileSize: 20 * 1024 * 1024, // 20MB per file
-    files: 2, // Allow 2 files (file + thumbnail)
+    fileSize: 20 * 1024 * 1024, // 20MB per file for both product image and review images
+    files: 6, // Allow 1 product image and up to 5 review images
   },
 }).fields([
-  { name: "imageUrl", maxCount: 1 },
-  { name: "reviews", maxCount: 1 },
+  { name: "imageUrl", maxCount: 1 }, // Single product image
+  { name: "reviews", maxCount: 5 }, // Allow up to 5 review images
 ]);
+
 // Helper to get the file URL
 export const getFileUrl = (filename: string) => {
   return `/storage/${filename}`; // Assuming static files are served from '/storage' directory

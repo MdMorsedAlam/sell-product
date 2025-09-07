@@ -15,40 +15,38 @@ import {
 } from "../../../helpers/imageUploadMiddleware";
 import { newsFilterableFields } from "./products.contants";
 
-// Controller to create product
-
+// Make sure catchAsync is correctly handling async errors
 export const createProductController = catchAsync(
-  async (req: Request, res: Response) => {
+  async (req: any, res: Response, next: NextFunction): Promise<void> => {
     // Get the data from req.body (it should now contain form data)
     let form = req.body;
-    console.log("Data received in controller:", req.files, req.file, form);
     // If product image exists, add the URL to the product data
-    // if (req.file) {
-    //   form.imageUrl = getFileUrl(req.file.filename);
-    // }
-
-    // If review images exist, add the URLs to the product data
-    // if (req.files) {
-    //   form.reviews = (req.files as Express.Multer.File[]).map((file) =>
-    //     getFileUrl(file.filename)
-    //   );
-    // }
-    // Handle file uploads
-    // if (req.files) {
-    //   form.media = (req.files as Express.Multer.File[]).map((file) =>
-    //     getFileUrl(file.filename)
-    //   );
-    // }
-
+    // Check if imageUrl exists and append it to the form
+    if (req.files && req.files["imageUrl"]) {
+      // Access the first file in the imageUrl array
+      form.imageUrl = getFileUrl(req.files["imageUrl"][0].filename);
+    }
+    // Check if review images exist and append them to the form
+    if (req.files && req.files["reviews"]) {
+      // Map through the reviews and get the file URLs
+      form.reviews = (req.files["reviews"] as Express.Multer.File[]).map(
+        (file) => getFileUrl(file.filename)
+      );
+    }
     // Pass the product data to the service for database insertion
-    // const result = await createProduct(form);
-
-    // Send response back with the created product data
-    // return res.status(201).json({
-    //   success: true,
-    //   message: "Product created successfully",
-    //   // data: result,
-    // });
+    try {
+      const result = await createProduct(form);
+      res.status(201).json({
+        success: true,
+        message: "Product created successfully",
+        data: result,
+      });
+    } catch (error: any) {
+      res.status(400).json({
+        success: false,
+        message: error.message, // This will include the "Product with the same name already exists."
+      });
+    }
   }
 );
 
@@ -88,8 +86,7 @@ const getAllProduct = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// Controller to update product details
-const updateProduct = catchAsync(async (req: Request, res: Response) => {
+const updateProduct = catchAsync(async (req: any, res: Response) => {
   const { id } = req.params;
   let { ...updatedData } = req.body;
 
@@ -98,16 +95,14 @@ const updateProduct = catchAsync(async (req: Request, res: Response) => {
     throw new ApiError(httpStatus.NOT_FOUND, "Product not found");
   }
 
-  // Validate ObjectId fields if necessary
-  if (updatedData.category && !Types.ObjectId.isValid(updatedData.category)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Invalid category ID");
+  // Only update fields that are provided
+  if (req.files && req.files["imageUrl"]) {
+    updatedData.imageUrl = getFileUrl(req.files["imageUrl"][0].filename);
   }
 
-  // Handle file uploads for media updates
-  if (req.files) {
-    // Remove existing media and add new media
-    updatedData.media = (req.files as Express.Multer.File[]).map((file) =>
-      getFileUrl(file.filename)
+  if (req.files && req.files["reviews"]) {
+    updatedData.reviews = (req.files["reviews"] as Express.Multer.File[]).map(
+      (file) => getFileUrl(file.filename)
     );
   }
 
