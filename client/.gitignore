@@ -10,7 +10,12 @@
 
 # production
 /build
-
+.env
+*.tar.gz
+*.zip
+bun.lock
+yarn.lock
+package-lock.json
 # debug
 npm-debug.log*
 yarn-debug.log*

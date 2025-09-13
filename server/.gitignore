@@ -1,3 +1,6 @@
 .vercel
 .env
 node_modules
+*.tar.gz
+*.zip
+bun.lock
