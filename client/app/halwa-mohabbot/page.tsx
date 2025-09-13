@@ -71,7 +71,7 @@ function HaluwaPage() {
       // Reset file input value
       const fileInput = document.getElementById("imageUrl") as HTMLInputElement;
       if (fileInput) fileInput.value = "";
-      router.push("/thanks");
+      router.push(`/thanks/mohabbat`);
     } catch (error) {
       toast.error("Failed to create product. Please try again.");
     } finally {
@@ -98,7 +98,7 @@ function HaluwaPage() {
     fetchData();
   }, [data, isLoading]);
   return (
-    <section className="bg-white pt-3 text-black">
+    <section className="bg-white pt-3 pb-6 text-black">
       <h1 className="bg-[#FF8C00] p-6 text-6xl text-center font-extrabold">
         হালুয়া মোহাব্বত
       </h1>
@@ -147,6 +147,13 @@ function HaluwaPage() {
         ৫০০ গ্রাম{" "}
         <strong className="text-green-500">{halwa?.offerPrice}</strong> টাকা
       </h3>
+      <div className="flex justify-center px-2">
+        <div className="p-4 border-2  border-dashed mb-4 inline-block rounded-lg border-green-500">
+          <h1 className="text-[#FF8C00] text-3xl py-4 font-extrabold">
+            {halwa?.gift}
+          </h1>
+        </div>
+      </div>
       <h3 className="text-5xl font-bold text-green-500 text-center my-8">
         হোম ডেলিভারি ফ্রী
       </h3>
@@ -198,7 +205,7 @@ function HaluwaPage() {
 
           {/* Content Box with Border */}
           <div className="p-8 border-2 border-gray-400 rounded-lgbg-gray-50">
-            <p className="text-xl font-bold leading-relaxed text-center">
+            <div className="text-xl font-bold leading-relaxed text-center">
               <h2 className="text-3xl font-extrabold text-center mb-6 text-gray-800">
                 হালুয়া খাবারের নিয়ম
               </h2>
@@ -212,7 +219,7 @@ function HaluwaPage() {
               {halwa?.useProduct}
               {/* 👉ম্যাসেজ অয়েল টি প্রতিদিন রাতে , আপনার বিশেষ অঙ্গে , নিচ থেকে
               ওপরে এভাবে ২/৩ মিনিট মালিশ করবেন */}
-            </p>
+            </div>
           </div>
         </div>
         <button className="text-3xl flex items-center justify-center bg-yellow-500 hover:bg-blue-600 text-white font-bold py-3 px-6 border-4 border-black rounded-full my-5 mx-auto">
@@ -296,12 +303,12 @@ function HaluwaPage() {
                   />
                   হালুয়া মোহাব্বত
                 </span>
-                <span>৳ {halwa?.offerPrice}</span>
+                <span className="text-lg font-bold">৳ {halwa?.offerPrice}</span>
               </div>
 
               <div className="flex justify-between mt-2 border-b border-green-500">
                 <span className="text-lg font-bold">ডেলিভারি চার্জ ফ্রি</span>
-                <span className="text-lg font-bold">৳ 00</span>
+                <span className="text-lg font-bold">৳ ০০</span>
               </div>
               <div className="flex justify-between mt-2">
                 <span className="text-lg font-bold">মোট</span>

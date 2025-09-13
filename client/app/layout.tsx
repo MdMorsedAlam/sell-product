@@ -10,13 +10,13 @@ import Footer from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Herbal Life - Latest News and Updates",
+  title: "Herbal Life ",
   description:
-    "Get the latest news, updates, and insights from around the world in both English and Bangla.",
+    "Get the latest Product",
   openGraph: {
-    title: "Herbal Life - Latest News and Updates",
+    title: "Herbal Life",
     description:
-      "Get the latest news, updates, and insights from around the world in both English and Bangla.",
+      "Get the latest Product",
     url: "https://rmtechbd.com",
     siteName: "Herbal Life",
     images: [

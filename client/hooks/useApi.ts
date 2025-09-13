@@ -176,7 +176,7 @@ export function usePatchWithFiles<TPayload = any, TResponse = any>(
       if (keyToInvalidate) {
         queryClient.invalidateQueries({ queryKey: keyToInvalidate });
       }
-      toast.success("Data updated with files successfully!");
+      toast.success("Data updated successfully!");
     },
     onError: () => {
       toast.error("Error updating data with files.");
@@ -212,7 +212,7 @@ export function usePatchForProductWithFiles<TPayload = any, TResponse = any>(
       if (keyToInvalidate) {
         queryClient.invalidateQueries({ queryKey: keyToInvalidate });
       }
-      toast.success("Data updated with files successfully!");
+      toast.success("Data updated successfully!");
     },
     onError: () => {
       toast.error("Error updating data with files.");

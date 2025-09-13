@@ -71,7 +71,7 @@ function HaluwaPage() {
       // Reset file input value
       const fileInput = document.getElementById("imageUrl") as HTMLInputElement;
       if (fileInput) fileInput.value = "";
-      router.push("/thanks");
+      router.push(`/thanks/halwa`);
     } catch (error) {
       toast.error("Failed to create product. Please try again.");
     } finally {
@@ -255,7 +255,7 @@ function HaluwaPage() {
 
           {/* Content Box with Border */}
           <div className="p-8 border-2 border-gray-400 rounded-lgbg-gray-50">
-            <p className="text-xl font-bold leading-relaxed text-center">
+            <div className="text-xl font-bold leading-relaxed text-center">
               <h2 className="text-3xl font-extrabold text-center mb-6 text-gray-800">
                 হালুয়া খাবারের নিয়ম
               </h2>
@@ -269,7 +269,7 @@ function HaluwaPage() {
               {halwa?.useProduct}
               {/* 👉ম্যাসেজ অয়েল টি প্রতিদিন রাতে , আপনার বিশেষ অঙ্গে , নিচ থেকে
               ওপরে এভাবে ২/৩ মিনিট মালিশ করবেন */}
-            </p>
+            </div>
           </div>
         </div>
         <h3 className="text-3xl border-b-2 pb-2 border-dashed border-yellow-500 font-extrabold text-center mb-6 text-gray-800">
@@ -334,12 +334,12 @@ function HaluwaPage() {
                 />
                 হালুয়া মোহাব্বত
               </span>
-              <span>৳ {halwa?.offerPrice}</span>
+              <span className="text-lg font-bold">৳ {halwa?.offerPrice}</span>
             </div>
 
             <div className="flex justify-between mt-2 border-b border-green-500">
               <span className="text-lg font-bold">ডেলিভারি চার্জ ফ্রি</span>
-              <span className="text-lg font-bold">৳ 00</span>
+              <span className="text-lg font-bold">৳ ০০</span>
             </div>
             <div className="flex justify-between mt-2">
               <span className="text-lg font-bold">মোট</span>

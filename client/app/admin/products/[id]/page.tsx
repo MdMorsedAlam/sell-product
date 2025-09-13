@@ -259,7 +259,7 @@ export default function EditProductPage() {
         </div>
 
         {/* Product SubTitle */}
-        <div>
+        <div hidden={productData.name==="Halwa Mohabbot"}>
           <label className="block">Product SubTitle</label>
           <input
             type="text"
@@ -271,7 +271,7 @@ export default function EditProductPage() {
         </div>
 
         {/* Product Description */}
-        <div>
+        <div hidden={productData.name==="Halwa Mohabbot"}>
           <label className="block">Product Description</label>
           <textarea
             value={productData.description}
@@ -353,7 +353,7 @@ export default function EditProductPage() {
         </div>
 
         {/* Product Problem */}
-        <div>
+        <div hidden={productData.name==="Halwa Mohabbot"}>
           <label className="block">সমস্যা</label>
           <input
             type="text"

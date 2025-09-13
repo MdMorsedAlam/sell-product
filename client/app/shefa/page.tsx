@@ -71,7 +71,7 @@ function HaluwaPage() {
       // Reset file input value
       const fileInput = document.getElementById("imageUrl") as HTMLInputElement;
       if (fileInput) fileInput.value = "";
-      router.push("/thanks");
+      router.push(`/thanks/shefa`);
     } catch (error) {
       toast.error("Failed to create product. Please try again.");
     } finally {
@@ -301,7 +301,7 @@ function HaluwaPage() {
 
           {/* Content Box with Border */}
           <div className="p-8 border-2 border-gray-400 rounded-lgbg-gray-50">
-            <p className="text-xl font-bold leading-relaxed text-center">
+            <div className="text-xl font-bold leading-relaxed text-center">
               <h2 className="text-3xl font-extrabold text-center mb-6 text-gray-800">
                 শিফা মিক্স খাবারের নিয়ম
               </h2>
@@ -311,7 +311,7 @@ function HaluwaPage() {
               </h2>
               👉ম্যাসেজ অয়েল টি প্রতিদিন রাতে , আপনার বিশেষ অঙ্গে , নিচ থেকে
               ওপরে এভাবে ২/৩ মিনিট মালিশ করবেন */}
-            </p>
+            </div>
           </div>
         </div>
         <h3 className="text-3xl border-b-2 pb-2 border-dashed border-yellow-500 font-extrabold text-center mb-6 text-gray-800">
@@ -379,12 +379,12 @@ function HaluwaPage() {
                 />
                 শিফা মিক্স
               </span>
-              <span>৳ {shefa?.offerPrice}</span>
+              <span className="text-lg font-bold">৳ {shefa?.offerPrice}</span>
             </div>
 
             <div className="flex justify-between mt-2 border-b border-green-500">
               <span className="text-lg font-bold">ডেলিভারি চার্জ ফ্রি</span>
-              <span className="text-lg font-bold">৳ 00</span>
+              <span className="text-lg font-bold">৳ ০০</span>
             </div>
             <div className="flex justify-between mt-2">
               <span className="text-lg font-bold">মোট</span>
@@ -467,12 +467,12 @@ function HaluwaPage() {
         </div>
       </div>
       <div className="bg-green-800 mx-2 text-3xl text-white p-4 rounded-xl text-center font-extrabold">
-        <p>
+        <div>
           প্রয়োজনে কল করুন :-{" "}
           {shefa?.contactNumber?.map((numb, index) => (
             <p key={index}>{numb}</p>
           ))}
-        </p>{" "}
+        </div>{" "}
       </div>
     </section>
   );

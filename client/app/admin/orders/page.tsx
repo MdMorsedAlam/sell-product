@@ -43,14 +43,14 @@ export default function OrdersTable() {
 
   useEffect(() => {
     if (data) {
-      setOrders(data);
+      setOrders(data.reverse());
     }
   }, [data]);
 
   const handleDelete = async (id: string) => {
     try {
       await deleteSingleOrder(id);
-      toast.success("Quiz deleted successfully");
+      toast.success("Order deleted successfully");
       refetch();
     } catch (error) {
       toast.error("Error deleting quiz");

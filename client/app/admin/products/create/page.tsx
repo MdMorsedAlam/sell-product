@@ -153,7 +153,6 @@ export default function CreateProductPage() {
 
     try {
       setIsLoading(true);
-      console.log([...form]);
       await createProduct(form);
       toast.success("Product created successfully!");
       router.push("/admin/products");
@@ -277,7 +276,7 @@ export default function CreateProductPage() {
         </div>
 
         {/* Product Gift */}
-        <div hidden={productData.name==="Halwa Mohabbot"}>
+        <div>
           <label className="block">উপহার ফ্রী</label>
           <input
             type="text"
