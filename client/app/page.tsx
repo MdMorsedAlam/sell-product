@@ -53,7 +53,7 @@ export default function Home() {
 
       {/* Product Showcase Section */}
       <section id="products" className="p-4 md:p-8 bg-gray-100">
-        <h2 className="text-3xl font-bold text-center mb-8">Our Products</h2>
+        <h2 className="text-3xl font-bold text-black text-center mb-8">Our Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Product 1 */}
 
@@ -67,7 +67,7 @@ export default function Home() {
                 alt={product?.name}
                 className="w-full h-48 object-cover rounded-t-lg mb-4"
               />
-              <h3 className="text-xl font-semibold">{product.name}</h3>
+              <h3 className="text-xl text-black font-semibold">{product.name}</h3>
               <p className="text-gray-600 mb-4">{product.title}</p>
               <button className="bg-blue-500 text-white py-2 px-4 rounded-full">
                 {product.name === "Haluwa" ? (

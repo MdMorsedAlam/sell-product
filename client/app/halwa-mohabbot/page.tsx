@@ -136,12 +136,20 @@ function HaluwaPage() {
         </div>
       </div>
 
-      <div className="w-[400px] h-[550px] md:w-[450px] md:h-[600px]  mx-auto border-4 rounded-lg border-black">
-        <img
-          className="w-full h-full object-center bg-no-repeat"
-          src={getImageUrl(halwa?.imageUrl)}
-          alt={halwa?.name}
-        />
+      <div className="flex justify-center">
+        <div
+          className="h-[400px] lg:h-[800px] m-2 max-w-lg md:m-16"
+          style={{
+            boxShadow:
+              "0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)",
+          }}
+        >
+          <img
+            className="w-full h-full rounded-xl object-center"
+            src={getImageUrl(halwa?.imageUrl)}
+            alt={halwa?.name}
+          />
+        </div>
       </div>
       <h3 className="text-5xl font-bold text-center py-10">
         ৫০০ গ্রাম{" "}
@@ -394,7 +402,7 @@ function HaluwaPage() {
         </div>
       </div>
       <div className="bg-green-800 mx-2 text-3xl text-white p-4 rounded-xl text-center font-extrabold">
-        <p>
+        <div>
           প্রয়োজনে কল করুন :-{" "}
           {halwa?.contactNumber?.map((numb, index) => (
             <p key={index}>
@@ -406,7 +414,7 @@ function HaluwaPage() {
               </a>
             </p>
           ))}
-        </p>
+        </div>
       </div>
     </section>
   );

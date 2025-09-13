@@ -223,17 +223,17 @@ function HaluwaPage() {
           হতে পারে। */}
           {shefa?.problem}
         </p>
-        <div className="bg-blue-600 py-10 flex flex-col items-center justify-center">
+        <div className="bg-blue-600 py-2 flex flex-col items-center justify-center">
           <h1 className="text-white text-4xl font-bold py-4">
             {shefa?.problemSolving}
           </h1>
 
           {/* Cards */}
-          <div className="space-y-4 w-full max-w-full px-5">
+          <div className="space-y-2 w-full max-w-full px-5">
             {/* Card 1 */}
             {shefa?.solutions?.map((solution, index) => (
-              <div key={index} className="bg-white p-4 rounded-lg shadow-md">
-                <p className="text-lg font-medium text-red-500">{solution}</p>
+              <div key={index} className="bg-white p-2 rounded-lg shadow-md">
+                <p className="text-xl font-medium text-red-500">{solution}</p>
               </div>
             ))}
 
@@ -271,7 +271,7 @@ function HaluwaPage() {
                 ✓ডায়াবেটিকস এবং উচ্চরক্তচাপ দুর করবে !
               </p>
             </div> */}
-            <p className="text-2xl font-bold leading-relaxed text-center text-white">
+            <p className="text-2xl font-bold text-center text-white">
               👉এখানে যে সমস্যাগুলো বলা হয়েছে এর মধ্য থেকে আপনার যেকোনো সমস্যা
               থাকলে এই শিফা মিক্স এর মাধ্যমে সেরে যাবে
             </p>
