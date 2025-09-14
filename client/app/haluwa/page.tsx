@@ -148,12 +148,12 @@ function HaluwaPage() {
             <h1>{halwa?.gift}</h1>
           </div>
           <p>
-            রেগুলার মূল্য <del className="text-red-500"> {halwa?.price}</del>{" "}
+            রেগুলার মূল্য ৫০০ গ্রাম <del className="text-red-500"> {halwa?.price}</del>{" "}
             টাকা
             {/* ১২৫০ */}
           </p>
           <p>
-            অফার মূল্য{" "}
+            অফার মূল্য ৫০০ গ্রাম{" "}
             <span className="text-blue-600">{halwa?.offerPrice}</span> টাকা
             {/* ৯৫০ */}
           </p>
@@ -332,7 +332,7 @@ function HaluwaPage() {
                   src={getImageUrl(halwa?.imageUrl)}
                   alt={halwa?.name}
                 />
-                হালুয়া মোহাব্বত
+                হালুয়া মোহাব্বত ৫০০ গ্রাম
               </span>
               <span className="text-lg font-bold">৳ {halwa?.offerPrice}</span>
             </div>

@@ -21,11 +21,11 @@ function ThanksPage() {
       switch (slug) {
         case "mohabbat":
           findData = data.find((item) => item.name === "Halwa Mohabbot");
-          setProductName("হালুয়া মোহাব্বত");
+          setProductName("হালুয়া মহাব্বত ৫০০ গ্রাম");
           break;
         case "halwa":
           findData = data.find((item) => item.name === "Haluwa");
-          setProductName("হালুয়া মোহাব্বত");
+          setProductName("হালুয়া মোহাব্বত ৫০০ গ্রাম");
           break;
         default:
           findData = data.find((item) => item.name === "Shefa Mixed");
@@ -45,7 +45,11 @@ function ThanksPage() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-green-100 p-2">
       <div className="bg-white w-full h-full p-4 rounded-lg">
-        <h1 className="text-6xl text-[#FF8C05] mb-3 text-center font-extrabold">
+        <h1
+          className={`text-6xl ${
+            productName === "শিফা মিক্স" ? "text-[#31a75e]" : "text-[#FF8C05]"
+          } mb-3 text-center font-extrabold`}
+        >
           ধন্যবাদ
         </h1>
         <h3 className="text-3xl text-center text-black font-bold">
@@ -56,11 +60,23 @@ function ThanksPage() {
           দ্রুত আপনার সাথে যোগাযোগ করা হবে। অনুগ্রহ করে অপেক্ষা করুন।
         </p>
         <div className="w-full mt-10">
-          <h2 className="text-xl font-bold mb-4 border-b-2 border-green-500 pb-2 text-green-600">
+          <h2
+            className={`text-xl font-bold mb-4 border-b-2  ${
+              productName === "শিফা মিক্স"
+                ? "border-blue-500 text-blue-600"
+                : "border-green-500 text-green-600"
+            }  pb-2`}
+          >
             বিলিং পণ্য
           </h2>
           <div className="space-y-4 text-black">
-            <div className="flex justify-between text-xl font-semibold border-b border-green-500 text-gray-700">
+            <div
+              className={`flex justify-between text-xl font-semibold border-b  ${
+                productName === "শিফা মিক্স"
+                  ? "border-blue-500"
+                  : "border-green-500"
+              } text-gray-700`}
+            >
               <span>পণ্য</span>
               <span>সাব টোটাল</span>
             </div>
@@ -73,10 +89,18 @@ function ThanksPage() {
                 />
                 {productName}
               </span>
-              <span className="text-lg font-bold">৳ {myData?.offerPrice || "N/A"}</span>
+              <span className="text-lg font-bold">
+                ৳ {myData?.offerPrice || "N/A"}
+              </span>
             </div>
 
-            <div className="flex justify-between mt-2 border-b text-black border-green-500">
+            <div
+              className={`flex justify-between mt-2 border-b text-black ${
+                productName === "শিফা মিক্স"
+                  ? "border-blue-500"
+                  : "border-green-500"
+              }`}
+            >
               <span className="text-lg font-bold">ডেলিভারি চার্জ ফ্রি</span>
               <span className="text-lg font-bold">৳ ০০</span>
             </div>

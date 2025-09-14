@@ -138,7 +138,7 @@ function HaluwaPage() {
 
       <div className="flex justify-center">
         <div
-          className="h-[400px] lg:h-[800px] m-2 max-w-lg md:m-16"
+          className="h-[400px] lg:h-[800px] m-2 max-w-lg md:m-10"
           style={{
             boxShadow:
               "0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)",
@@ -151,10 +151,10 @@ function HaluwaPage() {
           />
         </div>
       </div>
-      <h3 className="text-5xl font-bold text-center py-10">
+      {/* <h3 className="text-5xl font-bold text-center py-10">
         ৫০০ গ্রাম{" "}
         <strong className="text-green-500">{halwa?.offerPrice}</strong> টাকা
-      </h3>
+      </h3> */}
       <div className="flex justify-center px-2">
         <div className="p-4 border-2  border-dashed mb-4 inline-block rounded-lg border-green-500">
           <h1 className="text-[#FF8C00] text-3xl py-4 font-extrabold">
@@ -309,7 +309,7 @@ function HaluwaPage() {
                     src={getImageUrl(halwa?.imageUrl)}
                     alt={halwa?.name}
                   />
-                  হালুয়া মোহাব্বত
+                  হালুয়া মোহাব্বত ৫০০ গ্রাম
                 </span>
                 <span className="text-lg font-bold">৳ {halwa?.offerPrice}</span>
               </div>

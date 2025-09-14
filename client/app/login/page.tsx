@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
         const { data: userData } = await refetch(); // fetch fresh user data
         if (userData) {
           toast.success(`Login To The ${userData.role} Successfully!`);
-          
+
           // Redirect based on role
           if (userData.role === "admin") {
             router.push("/admin/dashboard");
@@ -73,7 +73,9 @@ export default function AdminLoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
               <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>
+                  Login failed. Please try again.
+                </AlertDescription>
               </Alert>
             )}
             <div className="space-y-2">
@@ -97,10 +99,7 @@ export default function AdminLoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              <p className="text-xs text-muted-foreground">
-                For demo purposes, any password will work with the correct
-                email.
-              </p>
+            
             </div>
           </form>
         </CardContent>
