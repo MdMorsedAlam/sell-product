@@ -7,16 +7,16 @@ import { AuthProvider } from "@/providers/authProvider";
 import ClientOnly from "@/providers/ClientOnly";
 import { Toaster } from "react-hot-toast";
 import Footer from "@/components/footer";
+import dynamic from "next/dynamic";
 const inter = Inter({ subsets: ["latin"] });
+const FacebookPixel = dynamic(import("@/components/facebook-pixel"));
 
 export const metadata = {
   title: "Herbal Life ",
-  description:
-    "Get the latest Product",
+  description: "Get the latest Product",
   openGraph: {
     title: "Herbal Life",
-    description:
-      "Get the latest Product",
+    description: "Get the latest Product",
     url: "https://rmtechbd.com",
     siteName: "Herbal Life",
     images: [
@@ -50,6 +50,7 @@ export default function RootLayout({
             <QueryProvider>
               <AuthProvider>
                 <LanguageProvider>
+                  <FacebookPixel />
                   {children}
                   <Footer />
                 </LanguageProvider>
